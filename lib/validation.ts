@@ -8,8 +8,5 @@ export const UserFormValidation = z.object({
   email: z.string().email("Invalid Email Address."),
   phone: z
     .string()
-    .refine(
-      (phone) => /^\+?[1-9]\d{1, 14}$/.test(phone),
-      "Invalid Phone Number."
-    ),
+    .refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid Phone Number."),
 });
