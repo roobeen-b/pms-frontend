@@ -18,14 +18,9 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
             className="h-10 mb-12 w-fit"
           />
           <RegisterForm user={user} />
-          <div className="text-14-regular mt-20 py-10 flex justify-between">
-            <p className="justify-items-end text-dark-600 xl:text-left">
-              © {new Date().getFullYear()} Patient Plus
-            </p>
-            <Link href="/?admin=true" className="text-green-500">
-              Admin
-            </Link>
-          </div>
+          <p className="justify-items-end text-dark-600 xl:text-left">
+            © {new Date().getFullYear()} Patient Plus
+          </p>
         </div>
       </section>
       <Image

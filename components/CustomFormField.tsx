@@ -149,6 +149,7 @@ const RenderField = ({
               className="shad-textArea border-0 resize-none"
               {...field}
               disabled={disabled}
+              rows={5}
             />
           </FormControl>
         </div>
