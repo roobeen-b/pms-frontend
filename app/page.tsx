@@ -15,7 +15,7 @@ export default function Home() {
             className="h-10 mb-12 w-fit"
           />
           <PatientForm />
-          <div className="text-14-regular mt-20 flex justify-between">
+          <div className="text-14-regular mt-20 py-10 flex justify-between">
             <p className="justify-items-end text-dark-600 xl:text-left">
               © {new Date().getFullYear()} Patient Plus
             </p>
