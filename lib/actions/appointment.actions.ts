@@ -19,3 +19,17 @@ export const createAppointment = async (
     console.log("An error occured while creating appointment: ", error);
   }
 };
+
+export const getAppointment = async (appointmentID: string) => {
+  try {
+    const appointment = await databases.getDocument(
+      process.env.NEXT_PUBLIC_DATABASE_ID!,
+      process.env.NEXT_PUBLIC_APPOINTMENT_COLLECTION_ID!,
+      appointmentID
+    );
+
+    return parseStringify(appointment);
+  } catch (error) {
+    console.log("Error occured white getting the appointment: ", error);
+  }
+};
