@@ -47,7 +47,7 @@ const PassKeyModal = () => {
     }
   }, [encryptedKey]);
 
-  function validatePassKey(e: MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function validatePassKey(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
 
     if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
