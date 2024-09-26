@@ -3,7 +3,6 @@
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
@@ -19,7 +18,7 @@ import { decryptKey, encryptKey } from "@/lib/utils";
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const PassKeyModal = () => {
   const router = useRouter();
