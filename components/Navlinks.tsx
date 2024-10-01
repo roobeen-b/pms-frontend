@@ -10,6 +10,11 @@ const links = [
     href: "/dashboard/appointments",
     icon: "/assets/icons/calendar.svg",
   },
+  {
+    name: "Settings",
+    href: "/dashboard/settings",
+    icon: "/assets/icons/calendar.svg",
+  },
 ];
 
 const Navlinks = () => {
@@ -22,7 +27,7 @@ const Navlinks = () => {
           href={link.href}
           key={link.name}
           className={`py-4 px-2 rounded-sm ${
-            path === link.href ? "bg-dark-400" : ""
+            path === link.href ? "bg-dark-300" : ""
           } `}
         >
           {link.name}
