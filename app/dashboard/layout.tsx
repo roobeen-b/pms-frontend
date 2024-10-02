@@ -2,22 +2,11 @@
 
 import Header from "@/components/Header";
 import Sidenav from "@/components/Sidenav";
+import { useAuthCheck } from "@/hooks/useAuthCheck";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
-  const token = typeof window != "undefined" && localStorage.getItem("token");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (!token) {
-      router.push("/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [token]);
+  const { isLoading } = useAuthCheck();
 
   if (isLoading)
     return (
