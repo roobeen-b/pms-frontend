@@ -35,16 +35,21 @@ const LoginForm = () => {
     try {
       const userData = { email, password };
       const res = await loginUser(userData);
-      const user: { id: string; fullname: string } = {
-        id: res.data.userId,
-        fullname: res.data.fullname,
-      };
-      if (res.status == 200) {
-        localStorage.setItem("token", res.accessToken);
-        localStorage.setItem("userData", JSON.stringify(user));
-        router.push(`/dashboard`);
+
+      if (res.status) {
+        const user: { id: string; fullname: string } = {
+          id: res.data.userId,
+          fullname: res.data.fullname,
+        };
+        if (res.status == 200) {
+          localStorage.setItem("token", res.accessToken);
+          localStorage.setItem("userData", JSON.stringify(user));
+          router.push(`/dashboard`);
+        } else {
+          setError(res.message);
+        }
       } else {
-        setError(res.message);
+        setError("Internal Server Error");
       }
     } catch (error) {
       console.log(error);

@@ -52,10 +52,14 @@ const SignupForm = () => {
       const userData = { fullname, phone, email, password, confirmPassword };
       const user = await createUser(userData);
 
-      if (user.status == 201) {
-        router.push(`/patients/${user.data.userId}/register`);
+      if (user.status) {
+        if (user.status == 201) {
+          router.push(`/patients/${user.data.userId}/register`);
+        } else {
+          setError(user.message);
+        }
       } else {
-        setError(user.message);
+        setError("Internal Server Error");
       }
     } catch (error) {
       console.log(error);

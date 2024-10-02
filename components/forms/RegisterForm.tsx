@@ -72,11 +72,14 @@ const RegisterForm = ({ userId }: { userId: string }) => {
       };
 
       const patient = await registerPatient(patientData);
-
-      if (patient.status == 201) {
-        router.push(`/login`);
+      if (patient.status) {
+        if (patient.status == 201) {
+          router.push(`/login`);
+        } else {
+          setError(patient.message);
+        }
       } else {
-        setError(patient.message);
+        setError("Internal Server Error");
       }
     } catch (error) {
       console.log(error);
