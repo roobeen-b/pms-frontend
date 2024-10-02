@@ -1,3 +1,5 @@
+"use client";
+
 import {
   FormControl,
   FormField,
@@ -8,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { Control } from "react-hook-form";
-import { FormFieldType } from "./forms/PatientForm";
+import { FormFieldType } from "./forms/SignupForm";
 import Image from "next/image";
 
 import PhoneInput from "react-phone-number-input";
@@ -33,6 +35,8 @@ interface CustomFormFieldProps {
   showTimeSelect?: boolean;
   children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
+  showPassword?: boolean;
+  setShowPassword?: (value: boolean) => void;
 }
 
 const RenderField = ({
@@ -53,6 +57,8 @@ const RenderField = ({
     disabled,
     name,
     label,
+    showPassword,
+    setShowPassword,
   } = props;
   switch (fieldType) {
     case FormFieldType.INPUT:
@@ -74,6 +80,41 @@ const RenderField = ({
               {...field}
             />
           </FormControl>
+        </div>
+      );
+
+    case FormFieldType.PASSWORD:
+      return (
+        <div className="flex rounded bg-dark-400 border-dark-500">
+          {iconSrc && (
+            <Image
+              src={iconSrc}
+              alt={iconAlt || "icon"}
+              height={24}
+              width={24}
+              className="ml-2 shad-input-icon"
+            />
+          )}
+          <FormControl>
+            <Input
+              placeholder={placeholder}
+              type={showPassword ? "text" : "password"}
+              className="shad-input border-0"
+              {...field}
+            />
+          </FormControl>
+          <Image
+            src={
+              showPassword
+                ? "/assets/icons/eye.svg"
+                : "/assets/icons/eye-slash.svg"
+            }
+            alt={"icon"}
+            height={24}
+            width={24}
+            className="mx-2 shad-input-icon cursor-pointer"
+            onClick={() => setShowPassword && setShowPassword(!showPassword)}
+          />
         </div>
       );
 

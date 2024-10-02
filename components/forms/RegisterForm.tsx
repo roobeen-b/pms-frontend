@@ -33,16 +33,18 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const RegisterForm = ({ user }: { user: User }) => {
+const RegisterForm = ({ userId }: { userId: string }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
-      name: "",
-      email: "",
-      phone: "",
+      // fullname: "",
+      // email: "",
+      // phone: "",
     },
   });
 
@@ -64,16 +66,17 @@ const RegisterForm = ({ user }: { user: User }) => {
     try {
       const patientData = {
         ...values,
-        userId: user.$id,
+        userId,
         birthDate: new Date(values.birthDate),
         identificationDocument: formData,
       };
 
-      // @ts-ignore
       const patient = await registerPatient(patientData);
 
-      if (patient) {
-        router.push(`/patients/${user.$id}/new-appointment`);
+      if (patient.status == 201) {
+        router.push(`/login`);
+      } else {
+        setError(patient.message);
       }
     } catch (error) {
       console.log(error);
@@ -91,10 +94,10 @@ const RegisterForm = ({ user }: { user: User }) => {
         <section className="space-y-6 mb-12">
           <h2 className="sub-header">Personal Information</h2>
         </section>
-        <CustomFormField
+        {/* <CustomFormField
           control={form.control}
           fieldType={FormFieldType.INPUT}
-          name="name"
+          name="fullname"
           label="Full name"
           placeholder="John Doe"
           iconSrc="/assets/icons/user.svg"
@@ -118,7 +121,7 @@ const RegisterForm = ({ user }: { user: User }) => {
             label="Phone Number"
             placeholder="+977 9856587402"
           />
-        </div>
+        </div> */}
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomFormField
             control={form.control}
@@ -330,6 +333,7 @@ const RegisterForm = ({ user }: { user: User }) => {
         />
 
         <SubmitButton isLoading={isLoading}>Submit and Continue</SubmitButton>
+        <p className="shad-error">{error && error}</p>
       </form>
     </Form>
   );

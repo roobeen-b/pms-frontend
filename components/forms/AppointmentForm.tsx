@@ -30,20 +30,20 @@ export enum FormFieldType {
 }
 
 const AppointmentForm = ({
-  userId,
-  patientId,
   type,
   appointment,
   setOpen,
 }: {
-  userId: string;
-  patientId: string;
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
   setOpen?: (open: boolean) => void;
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const user =
+    typeof window !== "undefined" &&
+    JSON.parse(localStorage.getItem("userData") || "");
 
   const AppointmentFormValidation = getAppointmentSchema(type);
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -76,10 +76,10 @@ const AppointmentForm = ({
         break;
     }
     try {
-      if (type === "create" && patientId) {
+      if (type === "create" && user.userId) {
         const appointmentData = {
-          userId,
-          patient: patientId,
+          userId: user.userId,
+          patient: user.userId,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason || "",
@@ -89,14 +89,12 @@ const AppointmentForm = ({
         const appointment = await createAppointment(appointmentData);
         if (appointment) {
           form.reset();
-          router.push(
-            `/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
-          );
+          router.push(`/`);
         }
       } else {
         const appointmentToUpdate = {
-          userId,
-          appointmentId: appointment?.$id!,
+          userId: user.userId,
+          appointmentId: appointment?.$id || "",
           appointment: {
             primaryPhysician: values?.primaryPhysician,
             schedule: new Date(values?.schedule),
@@ -109,7 +107,9 @@ const AppointmentForm = ({
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
         if (updatedAppointment) {
-          setOpen && setOpen(false);
+          if (setOpen) {
+            setOpen(false);
+          }
           form.reset();
         }
       }

@@ -9,15 +9,17 @@ declare type Gender = "male" | "female" | "other";
 declare type Status = "pending" | "scheduled" | "cancelled";
 
 declare interface CreateUserParams {
-  name: string;
+  fullname: string;
   email: string;
   phone: string;
+  password: string;
+  confirmPassword: string;
 }
 declare interface User extends CreateUserParams {
-  $id: string;
+  userId: string;
 }
 
-declare interface RegisterUserParams extends CreateUserParams {
+declare interface RegisterUserParams {
   userId: string;
   birthDate: Date;
   gender: Gender;
@@ -28,13 +30,13 @@ declare interface RegisterUserParams extends CreateUserParams {
   primaryPhysician: string;
   insuranceProvider: string;
   insurancePolicyNumber: string;
-  allergies: string | undefined;
-  currentMedication: string | undefined;
-  familyMedicalHistory: string | undefined;
-  pastMedicalHistory: string | undefined;
-  identificationType: string | undefined;
-  identificationNumber: string | undefined;
-  identificationDocument: FormData | undefined;
+  allergies?: string | undefined;
+  currentMedication?: string | undefined;
+  familyMedicalHistory?: string | undefined;
+  pastMedicalHistory?: string | undefined;
+  identificationType?: string | undefined;
+  identificationNumber?: string | undefined;
+  identificationDocument?: FormData | undefined;
   privacyConsent: boolean;
 }
 
