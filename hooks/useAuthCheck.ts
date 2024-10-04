@@ -5,16 +5,17 @@ import { useEffect, useState } from "react";
 
 export const useAuthCheck = () => {
   const router = useRouter();
-  const token = typeof window != "undefined" && localStorage.getItem("token");
+  const userData =
+    typeof window != "undefined" && localStorage.getItem("userData");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) {
+    if (!userData) {
       router.push("/login");
     } else {
       setIsLoading(false);
     }
-  }, [token]);
+  }, [userData]);
 
   return { isLoading };
 };

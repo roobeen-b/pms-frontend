@@ -37,14 +37,15 @@ const LoginForm = () => {
       const res = await loginUser(userData);
 
       if (res.status) {
-        const user: { id: string; fullname: string } = {
-          id: res.data.userId,
-          fullname: res.data.fullname,
-        };
         if (res.status == 200) {
-          localStorage.setItem("token", res.accessToken);
+          const user: { id: string; fullname: string } = {
+            id: res.data.userId,
+            fullname: res.data.fullname,
+          };
           localStorage.setItem("userData", JSON.stringify(user));
           router.push(`/dashboard`);
+        } else if (res.status == 401) {
+          setError(res.response.data.message);
         } else {
           setError(res.message);
         }

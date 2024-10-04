@@ -1,6 +1,9 @@
 import NewAppointmentButton from "@/components/NewAppointmentButton";
+import { getAllAppointments } from "@/lib/actions/appointment.actions";
 
-const Appointments = () => {
+const Appointments = async () => {
+  const allAppointments = await getAllAppointments();
+  console.log(allAppointments);
   return (
     <div>
       <div className="flex justify-between">

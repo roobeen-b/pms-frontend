@@ -2,6 +2,7 @@ import { Query } from "node-appwrite";
 import { account, databases, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import axios from "axios";
+import { BASE_URL } from "@/apiManager/apiMethods";
 
 // import { InputFile } from "node-appwrite/file";
 
@@ -15,7 +16,7 @@ export const createUser = async (user: CreateUserParams) => {
       fullname: user.fullname,
     };
 
-    const res = await axios.post("http://localhost:5000/register", newUser);
+    const res = await axios.post(BASE_URL + "register", newUser);
 
     if (res) {
       return res.data;
@@ -41,7 +42,7 @@ export const loginUser = async ({
       password,
     };
 
-    const res = await axios.post("http://localhost:5000/login", user);
+    const res = await axios.post(BASE_URL + "login", user);
     if (res) {
       return res.data;
     } else {

@@ -5,6 +5,16 @@ import { databases, messaging } from "../appwrite.config";
 import { formatDateTime, parseStringify } from "../utils";
 import { Appointment } from "@/types/appwrite.types";
 import { revalidatePath } from "next/cache";
+import ApiMethods from "@/apiManager/apiMethods";
+
+export const getAllAppointments = async () => {
+  try {
+    const allAppointments = await ApiMethods.get("appointments");
+    return allAppointments;
+  } catch (error) {
+    console.log("An error occured while fetching appointment: ", error);
+  }
+};
 
 export const createAppointment = async (
   appointment: CreateAppointmentParams

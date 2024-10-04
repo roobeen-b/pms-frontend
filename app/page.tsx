@@ -39,7 +39,7 @@ export default function Home({ searchParams }: SearchParamProps) {
               </Link>
             </p>
             <p>
-              Don't have an account ?{"  "}
+              Don&apos;t have an account ?{"  "}
               <Link href="/signup" className="text-green-500">
                 Sign Up
               </Link>

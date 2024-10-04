@@ -3,13 +3,8 @@ import axios from "axios";
 export const BASE_URL = "http://localhost:5000/";
 
 const getHeaders = () => {
-  const getToken = () => {
-    return JSON.parse(localStorage.getItem("token") || "") || "";
-  };
-
   return {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${getToken()}`,
   };
 };
 
@@ -21,6 +16,7 @@ class ApiMethods {
         url: BASE_URL + url,
         data: body,
         headers: getHeaders(),
+        withCredentials: true,
       })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
