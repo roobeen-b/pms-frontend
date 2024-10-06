@@ -15,19 +15,12 @@ import { Appointment } from "@/types/appwrite.types";
 
 type AppointmentModalProps = {
   type: "schedule" | "cancel";
-  patientId: string;
   userId: string;
   appointment?: Appointment;
 };
 
-const AppointmentModal = ({
-  type,
-  patientId,
-  userId,
-  appointment,
-}: AppointmentModalProps) => {
+const AppointmentModal = ({ type, appointment }: AppointmentModalProps) => {
   const [open, setOpen] = useState(false);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -48,8 +41,6 @@ const AppointmentModal = ({
           </DialogDescription>
         </DialogHeader>
         <AppointmentForm
-          userId={userId}
-          patientId={patientId}
           type={type}
           appointment={appointment}
           setOpen={setOpen}

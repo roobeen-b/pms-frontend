@@ -10,11 +10,14 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { LoginFormValidation } from "@/lib/validation";
 import { loginUser } from "@/lib/actions/patient.actions";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormFieldType } from "./SignupForm";
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from") || "/dashboard";
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -37,14 +40,16 @@ const LoginForm = () => {
       const res = await loginUser(userData);
 
       if (res.status) {
-        const user: { id: string; fullname: string } = {
-          id: res.data.userId,
-          fullname: res.data.fullname,
-        };
         if (res.status == 200) {
-          localStorage.setItem("token", res.accessToken);
+          const user: { id: string; fullname: string } = {
+            id: res.data.userId,
+            fullname: res.data.fullname,
+          };
+          localStorage.setItem("token", JSON.stringify(res.accessToken));
           localStorage.setItem("userData", JSON.stringify(user));
-          router.push(`/dashboard`);
+          router.push(from!);
+        } else if (res.status == 401) {
+          setError(res.response.data.message);
         } else {
           setError(res.message);
         }
