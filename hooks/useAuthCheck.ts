@@ -10,7 +10,7 @@ export const useAuthCheck = () => {
 
   useEffect(() => {
     if (!token) {
-      router.push("/login");
+      router.push(`/login?from=${location.pathname}`);
     } else {
       setIsLoading(false);
     }

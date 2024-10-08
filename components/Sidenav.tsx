@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Navlinks from "./Navlinks";
 import { useRouter } from "next/navigation";
+import SignOutBtn from "./SignOutBtn";
 
 const Sidenav = () => {
   const router = useRouter();
@@ -19,15 +20,7 @@ const Sidenav = () => {
       <div className="flex grow flex-row justify-between space-x-2 md:flex-col md:space-x-0 md:space-y-2">
         <Navlinks />
 
-        <div
-          className="flex items-end cursor-pointer"
-          onClick={() => {
-            localStorage.clear();
-            router.push("/");
-          }}
-        >
-          Sign Out
-        </div>
+        <SignOutBtn />
       </div>
     </div>
   );

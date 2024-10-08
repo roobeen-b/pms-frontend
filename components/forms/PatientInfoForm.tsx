@@ -42,9 +42,6 @@ const RegisterForm = ({ userId }: { userId: string }) => {
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
-      // fullname: "",
-      // email: "",
-      // phone: "",
     },
   });
 
@@ -97,34 +94,7 @@ const RegisterForm = ({ userId }: { userId: string }) => {
         <section className="space-y-6 mb-12">
           <h2 className="sub-header">Personal Information</h2>
         </section>
-        {/* <CustomFormField
-          control={form.control}
-          fieldType={FormFieldType.INPUT}
-          name="fullname"
-          label="Full name"
-          placeholder="John Doe"
-          iconSrc="/assets/icons/user.svg"
-          iconAlt="user"
-        />
 
-        <div className="flex flex-col gap-6 xl:flex-row">
-          <CustomFormField
-            control={form.control}
-            fieldType={FormFieldType.INPUT}
-            name="email"
-            label="Email Address"
-            placeholder="example@email.com"
-            iconSrc="/assets/icons/email.svg"
-            iconAlt="email"
-          />
-          <CustomFormField
-            control={form.control}
-            fieldType={FormFieldType.PHONE_INPUT}
-            name="phone"
-            label="Phone Number"
-            placeholder="+977 9856587402"
-          />
-        </div> */}
         <div className="flex flex-col gap-6 xl:flex-row">
           <CustomFormField
             control={form.control}

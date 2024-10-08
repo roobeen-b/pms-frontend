@@ -10,14 +10,19 @@ import SubmitButton from "../SubmitButton";
 import { useState } from "react";
 import { LoginFormValidation } from "@/lib/validation";
 import { loginUser } from "@/lib/actions/patient.actions";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FormFieldType } from "./SignupForm";
+import PassKeyModal from "../PassKeyModal";
 
 const LoginForm = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const form = useForm<z.infer<typeof LoginFormValidation>>({
     resolver: zodResolver(LoginFormValidation),
@@ -37,14 +42,24 @@ const LoginForm = () => {
       const res = await loginUser(userData);
 
       if (res.status) {
-        const user: { id: string; fullname: string } = {
-          id: res.data.userId,
-          fullname: res.data.fullname,
-        };
         if (res.status == 200) {
-          localStorage.setItem("token", res.accessToken);
+          const user: { id: string; fullname: string; role: string } = {
+            id: res.data.userId,
+            fullname: res.data.fullname,
+            role: res.data.role,
+          };
+          localStorage.setItem("token", JSON.stringify(res.accessToken));
           localStorage.setItem("userData", JSON.stringify(user));
-          router.push(`/dashboard`);
+
+          if (user.role === "Admin") {
+            setIsAdmin(true);
+          } else if (user.role === "User") {
+            router.push(from || "/dashboard");
+          } else {
+            router.push(from || "/doctor/[doctorId]/dashboard");
+          }
+        } else if (res.status == 401) {
+          setError(res.response.data.message);
         } else {
           setError(res.message);
         }
@@ -55,6 +70,10 @@ const LoginForm = () => {
       console.log(error);
     }
     setIsLoading(false);
+  }
+
+  if (isAdmin) {
+    return <PassKeyModal />;
   }
 
   return (

@@ -14,10 +14,10 @@ import { Doctors } from "@/constants";
 import Image from "next/image";
 import { SelectItem } from "../ui/select";
 import {
-  createAppointment,
+  createNewAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import { Appointment } from "@/types/appwrite.types";
+import useGetToken from "@/hooks/useGetToken";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -35,9 +35,10 @@ const AppointmentForm = ({
   setOpen,
 }: {
   type: "create" | "schedule" | "cancel";
-  appointment?: Appointment;
+  appointment?: AppointmentParams;
   setOpen?: (open: boolean) => void;
 }) => {
+  const { token } = useGetToken();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -76,35 +77,37 @@ const AppointmentForm = ({
         break;
     }
     try {
-      if (type === "create" && user.userId) {
+      if (type === "create" && user.id) {
         const appointmentData = {
-          userId: user.userId,
-          patient: user.userId,
+          userId: user.id,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason || "",
           note: values.note || "",
           status: status as Status,
         };
-        const appointment = await createAppointment(appointmentData);
+        const appointment = await createNewAppointment(appointmentData, token);
         if (appointment) {
           form.reset();
-          router.push(`/`);
+          router.push(`/dashboard/appointments`);
         }
       } else {
         const appointmentToUpdate = {
-          userId: user.userId,
-          appointmentId: appointment?.$id || "",
-          appointment: {
-            primaryPhysician: values?.primaryPhysician,
-            schedule: new Date(values?.schedule),
-            status: status as Status,
-            cancellationReason: values?.cancellationReason,
-          },
+          userId: user.id,
+          appointmentId: appointment?.appointmentId || "",
+          primaryPhysician: values?.primaryPhysician,
+          schedule: new Date(values?.schedule),
+          status: status as Status,
+          cancellationReason: values?.cancellationReason,
+          reason: values.reason || "",
+          note: values.note,
           type,
         };
 
-        const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        const updatedAppointment = await updateAppointment(
+          appointmentToUpdate,
+          token
+        );
 
         if (updatedAppointment) {
           if (setOpen) {

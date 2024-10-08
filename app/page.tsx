@@ -50,9 +50,9 @@ export default function Home({ searchParams }: SearchParamProps) {
               © {new Date().getFullYear()} Patient Plus
             </p>
 
-            <Link href="/?admin=true" className="text-green-500">
+            {/* <Link href="/?admin=true" className="text-green-500">
               Admin
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>
