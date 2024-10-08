@@ -1,14 +1,13 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Appointment } from "@/types/appwrite.types";
 import { StatusBadge } from "../StatusBadge";
 import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";
 import Image from "next/image";
 import AppointmentModal from "../AppointmentModal";
 
-export const columns: ColumnDef<Appointment>[] = [
+export const columns: ColumnDef<AppointmentParams>[] = [
   {
     header: "ID",
     cell: ({ row }) => <p className="text-14-medium">{row.index + 1}</p>,

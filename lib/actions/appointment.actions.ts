@@ -43,7 +43,7 @@ export const getAllAppointments = async (token: string) => {
       const data = {
         totalCount: allAppointments.data.length,
         ...counts,
-        appointments: allAppointments,
+        allAppointments: allAppointments.data,
       };
       return data;
     }
@@ -90,9 +90,8 @@ export const getAllAppointmentsByUser = async (token: string) => {
       const data = {
         totalCount: allAppointments.data.length,
         ...counts,
-        appointments: allAppointments,
+        allAppointments: allAppointments.data,
       };
-      console.log(data);
       return data;
     }
   } catch (error) {

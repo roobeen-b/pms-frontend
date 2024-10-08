@@ -17,7 +17,7 @@ const Appointments = () => {
         const res = await getAllAppointmentsByUser(token);
 
         if (res) {
-          setAppointments(res.appointments.data);
+          setAppointments(res.allAppointments);
         }
       } catch (error) {
         console.log(`Error fetching appointments: ${error}`);

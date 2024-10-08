@@ -11,12 +11,11 @@ import {
 import { useState } from "react";
 import { Button } from "./ui/button";
 import AppointmentForm from "./forms/AppointmentForm";
-import { Appointment } from "@/types/appwrite.types";
 
 type AppointmentModalProps = {
   type: "schedule" | "cancel";
   userId: string;
-  appointment?: Appointment;
+  appointment?: AppointmentParams;
 };
 
 const AppointmentModal = ({ type, appointment }: AppointmentModalProps) => {
