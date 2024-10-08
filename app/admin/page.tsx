@@ -1,9 +1,10 @@
 "use client";
 
+import SignOutBtn from "@/components/SignOutBtn";
 import StatCard from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
-import { useAuth } from "@/context/AuthProvider";
+import useGetToken from "@/hooks/useGetToken";
 import { getAllAppointments } from "@/lib/actions/appointment.actions";
 import { decryptKey } from "@/lib/utils";
 import Image from "next/image";
@@ -21,7 +22,7 @@ interface Appointments {
 const AdminPage = () => {
   const router = useRouter();
   const path = usePathname();
-  const { token } = useAuth()!;
+  const { token } = useGetToken();
 
   const [appointments, setAppointments] = useState<Appointments>({
     scheduledAppointments: 0,
@@ -101,6 +102,8 @@ const AdminPage = () => {
             width={32}
           />
           <p>Admin</p>
+          |
+          <SignOutBtn />
         </div>
       </header>
 

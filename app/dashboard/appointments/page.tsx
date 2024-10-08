@@ -3,13 +3,13 @@
 import NewAppointmentButton from "@/components/NewAppointmentButton";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
-import { useAuth } from "@/context/AuthProvider";
+import useGetToken from "@/hooks/useGetToken";
 import { getAllAppointmentsByUser } from "@/lib/actions/appointment.actions";
 import { useEffect, useState } from "react";
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState<AppointmentParams[]>([]);
-  const { token } = useAuth()!;
+  const { token } = useGetToken();
 
   useEffect(() => {
     const fetchAppointments = async () => {

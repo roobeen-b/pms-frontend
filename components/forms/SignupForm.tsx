@@ -11,6 +11,8 @@ import { useState } from "react";
 import { UserFormValidation } from "@/lib/validation";
 import { createUser } from "@/lib/actions/patient.actions";
 import { useRouter } from "next/navigation";
+import { RegisterAsOptions } from "@/constants";
+import { SelectItem } from "../ui/select";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -37,6 +39,7 @@ const SignupForm = () => {
       phone: "",
       password: "",
       confirmPassword: "",
+      role: "User" as RegisterAs,
     },
   });
 
@@ -46,15 +49,27 @@ const SignupForm = () => {
     phone,
     password,
     confirmPassword,
+    role,
   }: z.infer<typeof UserFormValidation>) {
     setIsLoading(true);
     try {
-      const userData = { fullname, phone, email, password, confirmPassword };
+      const userData = {
+        fullname,
+        phone,
+        email,
+        password,
+        confirmPassword,
+        role,
+      };
       const user = await createUser(userData);
 
       if (user.status) {
         if (user.status == 201) {
-          router.push(`/patients/${user.data.userId}/register`);
+          if (role === "User") {
+            router.push(`/patients/${user.data.userId}/register`);
+          } else if (role === "Doctor") {
+            router.push("/login");
+          }
         } else {
           setError(user.message);
         }
@@ -74,6 +89,23 @@ const SignupForm = () => {
           <h1 className="header">Hello there 👋</h1>
           <p className="text-dark-700">Get started with appointments</p>
         </section>
+
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.SELECT}
+          name="role"
+          label="Register As"
+          placeholder="Choose a role"
+        >
+          {RegisterAsOptions.map((option) => (
+            <SelectItem key={option} value={option}>
+              <div className="flex items-center cursor-pointer gap-2">
+                {option}
+              </div>
+            </SelectItem>
+          ))}
+        </CustomFormField>
+
         <div className="flex flex-col xl:flex-row gap-4">
           <CustomFormField
             control={form.control}

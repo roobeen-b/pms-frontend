@@ -13,6 +13,7 @@ export const createUser = async (user: CreateUserParams) => {
       password: user.password,
       confirmPassword: user.confirmPassword,
       fullname: user.fullname,
+      role: user.role,
     };
 
     const res = await axios.post("http://localhost:5000/register", newUser);

@@ -17,7 +17,7 @@ import {
   createNewAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import { useAuth } from "@/context/AuthProvider";
+import useGetToken from "@/hooks/useGetToken";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -38,7 +38,7 @@ const AppointmentForm = ({
   appointment?: AppointmentParams;
   setOpen?: (open: boolean) => void;
 }) => {
-  const { token } = useAuth()!;
+  const { token } = useGetToken();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

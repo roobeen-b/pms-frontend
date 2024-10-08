@@ -28,9 +28,9 @@ export default function Signup({ searchParams }: SearchParamProps) {
                 Login
               </Link>
             </p>
-            <Link href="/?admin=true" className="text-green-500">
+            {/* <Link href="/?admin=true" className="text-green-500">
               Admin
-            </Link>
+            </Link> */}
           </div>
           <p className="justify-items-end text-dark-600 xl:text-left">
             © {new Date().getFullYear()} Patient Plus

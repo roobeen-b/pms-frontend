@@ -5,6 +5,7 @@ declare type SearchParamProps = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
+declare type RegisterAs = "User" | "Doctor";
 declare type Gender = "male" | "female" | "other";
 declare type Status = "pending" | "scheduled" | "cancelled";
 
@@ -14,6 +15,7 @@ declare interface CreateUserParams {
   phone: string;
   password: string;
   confirmPassword: string;
+  role: string;
 }
 declare interface User extends CreateUserParams {
   userId: string;
