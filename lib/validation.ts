@@ -35,7 +35,7 @@ export const LoginFormValidation = z.object({
 
 export const PatientFormValidation = z.object({
   birthDate: z.coerce.date(),
-  gender: z.enum(["male", "female", "other"]),
+  gender: z.enum(["Male", "Female", "Other"]),
   address: z
     .string()
     .min(5, "Address must be at least 5 characters")

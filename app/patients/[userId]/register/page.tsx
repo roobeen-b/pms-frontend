@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/forms/PatientInfoForm";
+import PatientInfoForm from "@/components/forms/PatientInfoForm";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ const Register = async ({ params: { userId } }: SearchParamProps) => {
               className="h-10 mb-8 w-fit"
             />
           </Link>
-          <RegisterForm userId={userId} />
+          <PatientInfoForm isEdit={false} userId={userId} />
           <p className="justify-items-end text-dark-600 xl:text-left">
             © {new Date().getFullYear()} Patient Plus
           </p>

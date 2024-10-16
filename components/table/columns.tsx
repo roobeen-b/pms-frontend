@@ -67,6 +67,12 @@ export const columns: ColumnDef<AppointmentParams>[] = [
       const { userData } = useLocalStorage();
       return (
         <div className="flex gap-1">
+          <AppointmentModal
+            type="view"
+            userId={data.userId}
+            appointment={data}
+          />
+
           {userData.role !== "User" && (
             <AppointmentModal
               type="schedule"

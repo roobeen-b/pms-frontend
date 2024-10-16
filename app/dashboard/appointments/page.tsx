@@ -12,6 +12,7 @@ const Appointments = () => {
   const { token } = useLocalStorage();
 
   useEffect(() => {
+    if (!token) return;
     const fetchAppointments = async () => {
       try {
         const res = await getAllAppointmentsByUser(token);

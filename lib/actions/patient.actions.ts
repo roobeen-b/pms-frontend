@@ -2,6 +2,8 @@ import { Query } from "node-appwrite";
 import { account, databases, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import axios from "axios";
+import ApiMethods from "@/apiManager/apiMethods";
+import { revalidatePath } from "next/cache";
 
 // import { InputFile } from "node-appwrite/file";
 
@@ -25,7 +27,7 @@ export const createUser = async (user: CreateUserParams) => {
     }
   } catch (error) {
     console.error("An error occurred while creating a new user:", error);
-    return error;
+    return parseStringify(error);
   }
 };
 
@@ -50,7 +52,7 @@ export const loginUser = async ({
     }
   } catch (error) {
     console.log(`Error occured while login: ${error}`);
-    return error;
+    return parseStringify(error);
   }
 };
 
@@ -88,7 +90,7 @@ export const getPatient = async (userId: string) => {
   }
 };
 
-export const registerPatient = async ({
+export const registerPatientInfo = async ({
   // identificationDocument,
   ...patient
 }: RegisterUserParams) => {
@@ -113,25 +115,46 @@ export const registerPatient = async ({
       { ...patient }
     );
     if (res) {
-      const data = await res.data;
-      return data;
+      return res;
     } else {
       throw new Error("An error occured. Please try again!");
     }
-
-    // const newPatient = await databases.createDocument(
-    //   process.env.NEXT_PUBLIC_DATABASE_ID!,
-    //   process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID!,
-    //   ID.unique(),
-    //   {
-    //     identificationDocumentId: file?.$id || null,
-    //     identificationDocumentUrl: `${process.env.NEXT_PUBLIC_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_BUCKET_ID}/files/${file?.$id}/view?project=${process.env.NEXT_PUBLIC_PROJECT_ID}`,
-    //     ...patient,
-    //   }
-    // );
-
-    // return parseStringify(newPatient);
   } catch (error) {
     console.log(error);
+    return parseStringify(error);
+  }
+};
+
+export const updatePatientInfo = async (
+  patientData: RegisterUserParams,
+  token: string
+) => {
+  try {
+    const res = await ApiMethods.put(
+      "patient/updatePatientInfo",
+      { ...patientData },
+      token
+    );
+    if (res) {
+      return res;
+    } else {
+      throw new Error("An error occured. Please try again!");
+    }
+  } catch (error) {
+    console.log(error);
+    return parseStringify(error);
+  }
+};
+
+export const getPatientInfo = async (token: string) => {
+  try {
+    const res = (await ApiMethods.get("patient/getPatientInfo", token)) as any;
+    if (res) {
+      const data = await res.data;
+      return data;
+    }
+  } catch (error) {
+    console.log(`Error fetching patient data: ${error}`);
+    return parseStringify(error);
   }
 };

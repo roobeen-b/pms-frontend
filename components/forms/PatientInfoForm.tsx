@@ -7,9 +7,13 @@ import { z } from "zod";
 import { Form, FormControl } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PatientFormValidation } from "@/lib/validation";
-import { registerPatient } from "@/lib/actions/patient.actions";
+import {
+  getPatientInfo,
+  registerPatientInfo,
+  updatePatientInfo,
+} from "@/lib/actions/patient.actions";
 import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
@@ -22,6 +26,7 @@ import {
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import { FileUploader } from "../FileUploader";
+import { useToast } from "@/hooks/use-toast";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -33,17 +38,73 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-const RegisterForm = ({ userId }: { userId: string }) => {
+const PatientInfoForm = ({
+  isEdit,
+  userId,
+  patientData,
+  token,
+}: {
+  isEdit: boolean;
+  userId: string;
+  patientData?: any;
+  token?: string;
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof PatientFormValidation>>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
-      ...PatientFormDefaultValues,
+      birthDate: new Date(Date.now()),
+      gender: "Male" as Gender,
+      address: "",
+      occupation: "",
+      emergencyContactName: "",
+      emergencyContactNumber: "",
+      primaryPhysician: "",
+      insuranceProvider: "",
+      insurancePolicyNumber: "",
+      allergies: "",
+      currentMedication: "",
+      familyMedicalHistory: "",
+      pastMedicalHistory: "",
+      identificationType: "Birth Certificate",
+      identificationNumber: "",
+      identificationDocument: [],
+      treatmentConsent: false,
+      disclosureConsent: false,
+      privacyConsent: false,
     },
   });
+
+  useEffect(() => {
+    if (patientData) {
+      form.reset({
+        birthDate: new Date(patientData.birthDate),
+        gender: patientData.gender,
+        address: patientData.address || "",
+        occupation: patientData.occupation || "",
+        emergencyContactName: patientData.emergencyContactName || "",
+        emergencyContactNumber: patientData.emergencyContactNumber || "",
+        primaryPhysician: patientData.primaryPhysician || "",
+        insuranceProvider: patientData.insuranceProvider || "",
+        insurancePolicyNumber: patientData.insurancePolicyNumber || "",
+        allergies: patientData.allergies || "",
+        currentMedication: patientData.currentMedication || "",
+        familyMedicalHistory: patientData.familyMedicalHistory || "",
+        pastMedicalHistory: patientData.pastMedicalHistory || "",
+        identificationType:
+          patientData.identificationType || "Birth Certificate",
+        identificationNumber: patientData.identificationNumber || "",
+        identificationDocument: [],
+        treatmentConsent: patientData.treatmentConsent || false,
+        disclosureConsent: patientData.disclosureConsent || false,
+        privacyConsent: patientData.privacyConsent || false,
+      });
+    }
+  }, [patientData, form]);
 
   async function onSubmit(values: z.infer<typeof PatientFormValidation>) {
     setIsLoading(true);
@@ -68,15 +129,36 @@ const RegisterForm = ({ userId }: { userId: string }) => {
         identificationDocument: formData,
       };
 
-      const patient = await registerPatient(patientData);
-      if (patient.status) {
-        if (patient.status == 201) {
-          router.push(`/login`);
+      if (isEdit) {
+        const patient = await updatePatientInfo(patientData, token!);
+        if (patient.status) {
+          if (patient.status == 200) {
+            setError("");
+            toast({
+              title: patient.message,
+            });
+            router.push(`/dashboard/settings/patient`);
+          } else {
+            setError(patient.message);
+          }
         } else {
-          setError(patient.message);
+          setError("Internal Server Error");
         }
       } else {
-        setError("Internal Server Error");
+        const patient = await registerPatientInfo(patientData);
+        if (patient.status) {
+          if (patient.status == 201) {
+            setError("");
+            toast({
+              title: patient.message,
+            });
+            router.push(`/login`);
+          } else {
+            setError(patient.message);
+          }
+        } else {
+          setError("Internal Server Error");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -87,10 +169,13 @@ const RegisterForm = ({ userId }: { userId: string }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 flex-1">
-        <section className="space-y-6 mb-12">
-          <h1 className="header">Welcome 👋</h1>
-          <p className="text-dark-700">Let us know more about yourself</p>
-        </section>
+        {!isEdit && (
+          <section className="space-y-6 mb-12">
+            <h1 className="header">Welcome 👋</h1>
+            <p className="text-dark-700">Let us know more about yourself</p>
+          </section>
+        )}
+
         <section className="space-y-6 mb-12">
           <h2 className="sub-header">Personal Information</h2>
         </section>
@@ -99,7 +184,7 @@ const RegisterForm = ({ userId }: { userId: string }) => {
           <CustomFormField
             control={form.control}
             fieldType={FormFieldType.DATE_PICKER}
-            name="dateOfBirth"
+            name="birthDate"
             label="Date of birth"
             placeholder="Select your birth date"
             iconSrc="/assets/icons/calendar.svg"
@@ -119,10 +204,7 @@ const RegisterForm = ({ userId }: { userId: string }) => {
                 >
                   {GenderOptions.map((option) => (
                     <div key={option} className="radio-group">
-                      <RadioGroupItem
-                        value={option.toLowerCase()}
-                        id={option}
-                      />
+                      <RadioGroupItem value={option} id={option} />
                       <Label htmlFor={option} className="cursor-pointer">
                         {option}
                       </Label>
@@ -312,4 +394,4 @@ const RegisterForm = ({ userId }: { userId: string }) => {
   );
 };
 
-export default RegisterForm;
+export default PatientInfoForm;

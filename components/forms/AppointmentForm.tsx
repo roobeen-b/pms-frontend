@@ -35,18 +35,14 @@ const AppointmentForm = ({
   appointment,
   setOpen,
 }: {
-  type: "create" | "schedule" | "cancel";
+  type: "create" | "schedule" | "cancel" | "view";
   appointment?: AppointmentParams;
   setOpen?: (open: boolean) => void;
 }) => {
-  const { token } = useLocalStorage();
+  const { token, userData } = useLocalStorage();
   const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-
-  const user =
-    typeof window !== "undefined" &&
-    JSON.parse(localStorage.getItem("userData") || "");
 
   const AppointmentFormValidation = getAppointmentSchema(type);
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
@@ -79,9 +75,9 @@ const AppointmentForm = ({
         break;
     }
     try {
-      if (type === "create" && user.id) {
+      if (type === "create" && userData.id) {
         const appointmentData = {
-          userId: user.id,
+          userId: userData.id,
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           reason: values.reason || "",
@@ -107,7 +103,7 @@ const AppointmentForm = ({
         }
       } else {
         const appointmentToUpdate = {
-          userId: user.id,
+          userId: userData.id,
           appointmentId: appointment?.appointmentId || "",
           primaryPhysician: values?.primaryPhysician,
           schedule: new Date(values?.schedule),
