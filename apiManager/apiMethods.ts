@@ -14,7 +14,9 @@ class ApiMethods {
         },
       })
         .then((response) => resolve(response.data))
-        .catch((error) => reject(error));
+        .catch((error) => {
+          reject(error.response ? error.response.data : error.message);
+        });
     });
   }
 

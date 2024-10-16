@@ -1,10 +1,10 @@
 "use client";
 
 import NewAppointmentButton from "@/components/AppointmentButton";
-import useGetToken from "@/hooks/useGetToken";
 import { getAllAppointmentsByUser } from "@/lib/actions/appointment.actions";
 import { useEffect, useState } from "react";
 import StatCards from "@/components/StatCards";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState<Appointments>({
@@ -15,7 +15,7 @@ const Dashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const { token } = useGetToken();
+  const { token } = useLocalStorage();
 
   useEffect(() => {
     const fetchAppointments = async () => {

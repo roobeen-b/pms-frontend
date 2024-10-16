@@ -6,6 +6,7 @@ import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";
 import Image from "next/image";
 import AppointmentModal from "../AppointmentModal";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 export const columns: ColumnDef<AppointmentParams>[] = [
   {
@@ -63,13 +64,17 @@ export const columns: ColumnDef<AppointmentParams>[] = [
     id: "actions",
     header: () => <div className="pl-4">Actions</div>,
     cell: ({ row: { original: data } }) => {
+      const { userData } = useLocalStorage();
       return (
         <div className="flex gap-1">
-          <AppointmentModal
-            type="schedule"
-            userId={data.userId}
-            appointment={data}
-          />
+          {userData.role !== "User" && (
+            <AppointmentModal
+              type="schedule"
+              userId={data.userId}
+              appointment={data}
+            />
+          )}
+
           <AppointmentModal
             type="cancel"
             userId={data.userId}

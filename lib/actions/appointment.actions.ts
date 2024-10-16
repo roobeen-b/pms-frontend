@@ -113,6 +113,7 @@ export const createNewAppointment = async (
     return newAppointment;
   } catch (error) {
     console.log("An error occured while creating appointment: ", error);
+    return parseStringify(error);
   }
 };
 
@@ -146,6 +147,7 @@ export const updateAppointment = async (
     return updatedAppointment;
   } catch (error) {
     console.log(`Error while updating appointment: ${error}`);
+    return parseStringify(error);
   }
 };
 

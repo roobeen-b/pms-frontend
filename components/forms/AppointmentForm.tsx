@@ -17,7 +17,8 @@ import {
   createNewAppointment,
   updateAppointment,
 } from "@/lib/actions/appointment.actions";
-import useGetToken from "@/hooks/useGetToken";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { useToast } from "@/hooks/use-toast";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -38,7 +39,8 @@ const AppointmentForm = ({
   appointment?: AppointmentParams;
   setOpen?: (open: boolean) => void;
 }) => {
-  const { token } = useGetToken();
+  const { token } = useLocalStorage();
+  const { toast } = useToast();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -87,7 +89,19 @@ const AppointmentForm = ({
           status: status as Status,
         };
         const appointment = await createNewAppointment(appointmentData, token);
+
         if (appointment) {
+          if (appointment.status >= 400) {
+            toast({
+              variant: "destructive",
+              title: appointment.message,
+            });
+          } else {
+            toast({
+              title: appointment.message,
+            });
+          }
+
           form.reset();
           router.push(`/dashboard/appointments`);
         }
@@ -108,8 +122,17 @@ const AppointmentForm = ({
           appointmentToUpdate,
           token
         );
-
         if (updatedAppointment) {
+          if (updatedAppointment.status >= 400) {
+            toast({
+              variant: "destructive",
+              title: updatedAppointment.message,
+            });
+          } else {
+            toast({
+              title: updatedAppointment.message,
+            });
+          }
           if (setOpen) {
             setOpen(false);
           }

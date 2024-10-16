@@ -13,6 +13,7 @@ import { loginUser } from "@/lib/actions/patient.actions";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FormFieldType } from "./SignupForm";
 import PassKeyModal from "../PassKeyModal";
+import { encryptKey } from "@/lib/utils";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -49,7 +50,8 @@ const LoginForm = () => {
             role: res.data.role,
           };
           localStorage.setItem("token", JSON.stringify(res.accessToken));
-          localStorage.setItem("userData", JSON.stringify(user));
+          const encryptedUserData = encryptKey(JSON.stringify(user));
+          localStorage.setItem("userData", encryptedUserData);
 
           if (user.role === "Admin") {
             setIsAdmin(true);

@@ -4,7 +4,7 @@ import SignOutBtn from "@/components/SignOutBtn";
 import StatCards from "@/components/StatCards";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
-import useGetToken from "@/hooks/useGetToken";
+import useLocalStorage from "@/hooks/useLocalStorage";
 import { getAllAppointments } from "@/lib/actions/appointment.actions";
 import { decryptKey } from "@/lib/utils";
 import Image from "next/image";
@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 const AdminPage = () => {
   const router = useRouter();
   const path = usePathname();
-  const { token } = useGetToken();
+  const { token } = useLocalStorage();
 
   const [appointments, setAppointments] = useState<Appointments>({
     scheduledAppointments: 0,
