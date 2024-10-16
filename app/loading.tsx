@@ -1,18 +1,7 @@
-import Image from "next/image";
+import Loader from "@/components/Loader";
 
 const loading = () => {
-  return (
-    <div className="h-screen flex items-center justify-center gap-4">
-      <Image
-        src="/assets/icons/loader.svg"
-        alt="loader"
-        height={24}
-        width={24}
-        className="animate-spin"
-      />
-      Loading ...
-    </div>
-  );
+  return <Loader />;
 };
 
 export default loading;

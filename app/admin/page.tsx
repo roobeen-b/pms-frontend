@@ -1,7 +1,7 @@
 "use client";
 
 import SignOutBtn from "@/components/SignOutBtn";
-import StatCard from "@/components/StatCard";
+import StatCards from "@/components/StatCards";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
 import useGetToken from "@/hooks/useGetToken";
@@ -11,13 +11,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-
-interface Appointments {
-  scheduledAppointments: number;
-  pendingAppointments: number;
-  cancelledAppointments: number;
-  allAppointments: any[];
-}
 
 const AdminPage = () => {
   const router = useRouter();
@@ -68,20 +61,6 @@ const AdminPage = () => {
     fetchAppointments();
   }, [token]);
 
-  if (isLoading)
-    return (
-      <div className="h-screen w-screen flex justify-center items-center gap-4">
-        <Image
-          src="/assets/icons/loader.svg"
-          alt="loader"
-          height={24}
-          width={24}
-          className="animate-spin"
-        />
-        Loading ...
-      </div>
-    );
-
   return (
     <div className="flex flex-col mx-auto max-w-7xl space-y-8">
       <header className="admin-header">
@@ -115,26 +94,7 @@ const AdminPage = () => {
           </p>
         </section>
 
-        <section className="admin-stat">
-          <StatCard
-            type="scheduled"
-            icon="/assets/icons/appointments.svg"
-            count={appointments.scheduledAppointments}
-            label="Total number of scheduled appointments"
-          />
-          <StatCard
-            type="pending"
-            icon="/assets/icons/pending.svg"
-            count={appointments.pendingAppointments}
-            label="Total number of pending appointments"
-          />
-          <StatCard
-            type="cancelled"
-            icon="/assets/icons/cancelled.svg"
-            count={appointments.cancelledAppointments}
-            label="Total number of cancelled appointments"
-          />
-        </section>
+        <StatCards appointments={appointments} loading={isLoading} />
 
         <DataTable data={appointments.allAppointments} columns={columns} />
       </main>

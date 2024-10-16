@@ -1,6 +1,6 @@
 "use client";
 
-import NewAppointmentButton from "@/components/NewAppointmentButton";
+import AppointmentButton from "@/components/AppointmentButton";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
 import useGetToken from "@/hooks/useGetToken";
@@ -31,7 +31,7 @@ const Appointments = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <h1 className="sub-header">All Appointments</h1>
-        <NewAppointmentButton />
+        <AppointmentButton type="Create" />
       </div>
       <div>
         <DataTable data={appointments} columns={columns} />

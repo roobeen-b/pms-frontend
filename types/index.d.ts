@@ -84,3 +84,7 @@ declare interface AppointmentCounts {
   scheduledAppointments: number;
   cancelledAppointments: number;
 }
+
+declare interface Appointments extends AppointmentCounts {
+  allAppointments: any[];
+}
