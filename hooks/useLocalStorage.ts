@@ -9,6 +9,8 @@ const useLocalStorage = () => {
     id: "",
     fullname: "",
     role: "",
+    email: "",
+    phone: "",
   });
 
   useEffect(() => {

@@ -2,10 +2,8 @@ import { Query } from "node-appwrite";
 import { account, databases, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
 import axios from "axios";
-import ApiMethods from "@/apiManager/apiMethods";
+import ApiMethods, { BASE_URL } from "@/apiManager/apiMethods";
 import { revalidatePath } from "next/cache";
-
-// import { InputFile } from "node-appwrite/file";
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -18,7 +16,7 @@ export const createUser = async (user: CreateUserParams) => {
       role: user.role,
     };
 
-    const res = await axios.post("http://localhost:5000/register", newUser);
+    const res = await axios.post(BASE_URL + "register", newUser);
 
     if (res) {
       return res.data;
@@ -44,7 +42,7 @@ export const loginUser = async ({
       password,
     };
 
-    const res = await axios.post("http://localhost:5000/login", user);
+    const res = await axios.post(BASE_URL + "login", user);
     if (res) {
       return res.data;
     } else {
@@ -110,10 +108,9 @@ export const registerPatientInfo = async ({
     //   );
     // }
 
-    const res = await axios.post(
-      "http://localhost:5000/patient/registerPatientInfo",
-      { ...patient }
-    );
+    const res = await axios.post(BASE_URL + "patient/registerPatientInfo", {
+      ...patient,
+    });
     if (res) {
       return res;
     } else {
@@ -155,6 +152,26 @@ export const getPatientInfo = async (token: string) => {
     }
   } catch (error) {
     console.log(`Error fetching patient data: ${error}`);
+    return parseStringify(error);
+  }
+};
+
+export const updateUserInfo = async (
+  token: string,
+  userData: UpdateUserParams
+) => {
+  try {
+    const res = (await ApiMethods.put(
+      "updateUserInfo",
+      userData,
+      token
+    )) as any;
+
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log(`Error updating user data: ${error}`);
     return parseStringify(error);
   }
 };

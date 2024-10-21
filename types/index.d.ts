@@ -21,6 +21,14 @@ declare interface User extends CreateUserParams {
   userId: string;
 }
 
+declare interface UpdateUserParams {
+  id: string;
+  fullname: string;
+  phone: string;
+  email: string;
+  role?: string;
+}
+
 declare interface RegisterUserParams {
   userId: string;
   birthDate: Date;

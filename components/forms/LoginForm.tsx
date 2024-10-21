@@ -44,10 +44,18 @@ const LoginForm = () => {
 
       if (res.status) {
         if (res.status == 200) {
-          const user: { id: string; fullname: string; role: string } = {
+          const user: {
+            id: string;
+            fullname: string;
+            role: string;
+            email: string;
+            phone: string;
+          } = {
             id: res.data.userId,
             fullname: res.data.fullname,
             role: res.data.role,
+            email: res.data.email,
+            phone: res.data.phone,
           };
           localStorage.setItem("token", JSON.stringify(res.accessToken));
           const encryptedUserData = encryptKey(JSON.stringify(user));
