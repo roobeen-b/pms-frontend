@@ -16,13 +16,12 @@ const useLocalStorage = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedToken = window.localStorage.getItem("token");
-      const user = JSON.parse(
-        decryptKey(localStorage.getItem("userData") || "")
-      );
-      if (storedToken) {
+      const userInfo = localStorage.getItem("userData") || "";
+
+      if (storedToken && userInfo) {
         try {
           setToken(JSON.parse(storedToken));
-          setUserData(user);
+          setUserData(JSON.parse(decryptKey(userInfo)));
         } catch (error) {
           console.log(`Error parsing token: ${error}`);
         }
