@@ -27,6 +27,7 @@ import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import { FileUploader } from "../FileUploader";
 import { useToast } from "@/hooks/use-toast";
+import { getAllDOctors } from "@/lib/actions/doctor.actions";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -50,6 +51,7 @@ const PatientInfoForm = ({
   token?: string;
 }) => {
   const router = useRouter();
+  const [doctors, setDoctors] = useState<DoctorInfo[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const { toast } = useToast();
@@ -78,6 +80,21 @@ const PatientInfoForm = ({
       privacyConsent: false,
     },
   });
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await getAllDOctors();
+        if (res && res.status === 200) {
+          setDoctors(res.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   useEffect(() => {
     if (patientData) {
@@ -259,17 +276,21 @@ const PatientInfoForm = ({
           label="Primary care physician"
           placeholder="Choose a physician"
         >
-          {Doctors.map((doctor) => (
-            <SelectItem key={doctor.name} value={doctor.name}>
+          {doctors.map((doctor) => (
+            <SelectItem key={doctor?.doctorId} value={doctor?.fullname}>
               <div className="flex items-center cursor-pointer gap-2">
                 <Image
-                  src={doctor.image}
+                  src={
+                    process.env.NEXT_PUBLIC_IMAGE_URL +
+                    "doctors/" +
+                    doctor?.doctorPhoto
+                  }
                   width={24}
                   height={24}
                   alt="Doctor's image"
                   className="border border-dark-500 rounded-full"
                 />
-                <p>{doctor.name}</p>
+                <p>{doctor?.fullname}</p>
               </div>
             </SelectItem>
           ))}

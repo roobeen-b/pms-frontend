@@ -1,9 +1,6 @@
-import { Query } from "node-appwrite";
-import { account, databases, users } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import ApiMethods, { BASE_URL } from "@/apiManager/apiMethods";
-import { revalidatePath } from "next/cache";
 
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -25,6 +22,9 @@ export const createUser = async (user: CreateUserParams) => {
     }
   } catch (error) {
     console.error("An error occurred while creating a new user:", error);
+    if (error instanceof AxiosError) {
+      return error.response ? error.response.data : error.message;
+    }
     return parseStringify(error);
   }
 };
@@ -50,64 +50,17 @@ export const loginUser = async ({
     }
   } catch (error) {
     console.log(`Error occured while login: ${error}`);
+    if (error instanceof AxiosError) {
+      return error.response ? error.response.data : error.message;
+    }
     return parseStringify(error);
   }
 };
 
-export const getUser = async (userId: string) => {
-  try {
-    const currentUser = await users.get(userId);
-
-    return parseStringify(currentUser);
-  } catch (error) {
-    console.log("Error occured white getting the user: ", error);
-  }
-};
-
-export const getCurrentUser = async () => {
-  try {
-    const currentUser = await account.get();
-    console.log("action:", currentUser);
-    return parseStringify(currentUser);
-  } catch (error) {
-    console.log("Error occured white getting the user: ", error);
-  }
-};
-
-export const getPatient = async (userId: string) => {
-  try {
-    const patients = await databases.listDocuments(
-      process.env.NEXT_PUBLIC_DATABASE_ID!,
-      process.env.NEXT_PUBLIC_PATIENT_COLLECTION_ID!,
-      [Query.equal("userId", userId)]
-    );
-
-    return parseStringify(patients.documents[0]);
-  } catch (error) {
-    console.log("Error occured white getting the patient: ", error);
-  }
-};
-
 export const registerPatientInfo = async ({
-  // identificationDocument,
   ...patient
 }: RegisterUserParams) => {
   try {
-    // let file;
-
-    // if (identificationDocument) {
-    //   const inputFile = InputFile.fromBuffer(
-    //     identificationDocument?.get("blobFile") as Blob,
-    //     identificationDocument?.get("fileName") as string
-    //   );
-
-    //   file = await storage.createFile(
-    //     process.env.NEXT_PUBLIC_BUCKET_ID!,
-    //     ID.unique(),
-    //     inputFile
-    //   );
-    // }
-
     const res = await axios.post(BASE_URL + "patient/registerPatientInfo", {
       ...patient,
     });
@@ -118,6 +71,9 @@ export const registerPatientInfo = async ({
     }
   } catch (error) {
     console.log(error);
+    if (error instanceof AxiosError) {
+      return error.response ? error.response.data : error.message;
+    }
     return parseStringify(error);
   }
 };

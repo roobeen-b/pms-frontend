@@ -19,7 +19,7 @@ export const getAllAppointments = async (token: string) => {
     };
 
     if (allAppointments) {
-      const counts = (allAppointments.data as AppointmentParams[]).reduce(
+      const counts = (allAppointments.data as AppointmentParams[])?.reduce(
         (acc: AppointmentCounts, appointment: AppointmentParams) => {
           switch (appointment.status) {
             case "pending":
@@ -41,9 +41,9 @@ export const getAllAppointments = async (token: string) => {
         initialCounts
       );
       const data = {
-        totalCount: allAppointments.data.length,
+        totalCount: allAppointments?.data?.length,
         ...counts,
-        allAppointments: allAppointments.data,
+        allAppointments: allAppointments?.data,
       };
       return data;
     }
@@ -66,7 +66,7 @@ export const getAllAppointmentsByUser = async (token: string) => {
     };
 
     if (allAppointments) {
-      const counts = (allAppointments.data as AppointmentParams[]).reduce(
+      const counts = (allAppointments.data as AppointmentParams[])?.reduce(
         (acc: AppointmentCounts, appointment: AppointmentParams) => {
           switch (appointment.status) {
             case "pending":
@@ -88,9 +88,56 @@ export const getAllAppointmentsByUser = async (token: string) => {
         initialCounts
       );
       const data = {
-        totalCount: allAppointments.data.length,
+        totalCount: allAppointments?.data?.length,
         ...counts,
-        allAppointments: allAppointments.data,
+        allAppointments: allAppointments?.data,
+      };
+      return data;
+    }
+  } catch (error) {
+    console.log("An error occured while fetching appointment: ", error);
+  }
+};
+
+export const getAllAppointmentsByDoctor = async (token: string) => {
+  try {
+    const allAppointments = (await ApiMethods.get(
+      "appointments/getAppointmentsByDoctor",
+      token
+    )) as { data: AppointmentParams[] };
+
+    const initialCounts: AppointmentCounts = {
+      pendingAppointments: 0,
+      scheduledAppointments: 0,
+      cancelledAppointments: 0,
+    };
+
+    if (allAppointments) {
+      const counts = (allAppointments.data as AppointmentParams[])?.reduce(
+        (acc: AppointmentCounts, appointment: AppointmentParams) => {
+          switch (appointment.status) {
+            case "pending":
+              acc.pendingAppointments += 1;
+              break;
+
+            case "scheduled":
+              acc.scheduledAppointments += 1;
+              break;
+
+            case "cancelled":
+              acc.cancelledAppointments += 1;
+              break;
+            default:
+              break;
+          }
+          return acc;
+        },
+        initialCounts
+      );
+      const data = {
+        totalCount: allAppointments?.data?.length,
+        ...counts,
+        allAppointments: allAppointments?.data,
       };
       return data;
     }

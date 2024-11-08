@@ -52,6 +52,7 @@ declare interface RegisterUserParams {
 
 declare type CreateAppointmentParams = {
   userId: string;
+  doctorId: string;
   primaryPhysician: string;
   reason: string;
   schedule: Date;
@@ -62,6 +63,7 @@ declare type CreateAppointmentParams = {
 declare type UpdateAppointmentParams = {
   appointmentId: string;
   userId: string;
+  doctorId: string;
   type: string;
   primaryPhysician: string;
   reason: string;
@@ -83,6 +85,7 @@ declare interface AppointmentParams {
   status: "scheduled" | "pending" | "cancelled";
   cancellationReason: string;
   userId: string;
+  doctorId: string;
   createdDate: Date;
   updatedDate: Date;
 }
@@ -95,4 +98,21 @@ declare interface AppointmentCounts {
 
 declare interface Appointments extends AppointmentCounts {
   allAppointments: any[];
+}
+
+declare interface RegisterDoctorInfo {
+  doctorId: string;
+  doctorLicenseNo: string;
+  specialties: number;
+  doctorPhoto: File;
+  doctorDesc: string;
+}
+
+declare interface DoctorInfo extends RegisterDoctorInfo {
+  fullname: string;
+  email: string;
+  phone: string;
+  doctorPhoto: string;
+  docLicenseNo: string;
+  specialty: string;
 }

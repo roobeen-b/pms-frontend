@@ -66,7 +66,7 @@ const LoginForm = () => {
           } else if (user.role === "User") {
             router.push(from || "/dashboard");
           } else {
-            router.push(from || "/doctor/[doctorId]/dashboard");
+            router.push(from || `/dashboard`);
           }
         } else if (res.status == 401) {
           setError(res.response.data.message);

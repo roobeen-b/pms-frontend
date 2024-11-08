@@ -68,7 +68,7 @@ const SignupForm = () => {
           if (role === "User") {
             router.push(`/patients/${user.data.userId}/register`);
           } else if (role === "Doctor") {
-            router.push("/login");
+            router.push(`/doctors/${user.data.userId}/register`);
           }
         } else {
           setError(user.message);

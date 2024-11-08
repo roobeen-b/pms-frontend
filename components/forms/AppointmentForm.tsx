@@ -7,10 +7,9 @@ import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getAppointmentSchema } from "@/lib/validation";
-import { useRouter } from "next/navigation";
-import { Doctors } from "@/constants";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { SelectItem } from "../ui/select";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@/lib/actions/appointment.actions";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useToast } from "@/hooks/use-toast";
+import { getAllDOctors } from "@/lib/actions/doctor.actions";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -42,13 +42,33 @@ const AppointmentForm = ({
   const { token, userData } = useLocalStorage();
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [doctors, setDoctors] = useState<DoctorInfo[]>([]);
+
+  const doctorName = searchParams.get("doctor");
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const res = await getAllDOctors();
+        if (res && res.status === 200) {
+          setDoctors(res.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchDoctors();
+  }, []);
 
   const AppointmentFormValidation = getAppointmentSchema(type);
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: appointment?.primaryPhysician || "",
+      primaryPhysician: appointment?.primaryPhysician || doctorName || "",
       schedule: appointment
         ? new Date(appointment?.schedule)
         : new Date(Date.now()),
@@ -78,7 +98,10 @@ const AppointmentForm = ({
       if (type === "create" && userData.id) {
         const appointmentData = {
           userId: userData.id,
-          primaryPhysician: values.primaryPhysician,
+          primaryPhysician: values?.primaryPhysician,
+          doctorId: doctors?.find(
+            (doctor) => doctor.fullname === values.primaryPhysician
+          )?.doctorId!,
           schedule: new Date(values.schedule),
           reason: values.reason || "",
           note: values.note || "",
@@ -106,6 +129,9 @@ const AppointmentForm = ({
           userId: userData.id,
           appointmentId: appointment?.appointmentId || "",
           primaryPhysician: values?.primaryPhysician,
+          doctorId: doctors?.find(
+            (doctor) => doctor.fullname === values.primaryPhysician
+          )?.doctorId!,
           schedule: new Date(values?.schedule),
           status: status as Status,
           cancellationReason: values?.cancellationReason,
@@ -180,17 +206,21 @@ const AppointmentForm = ({
               label="Doctor"
               placeholder="Choose a doctor"
             >
-              {Doctors.map((doctor) => (
-                <SelectItem key={doctor.name} value={doctor.name}>
+              {doctors.map((doctor) => (
+                <SelectItem key={doctor?.doctorId} value={doctor?.fullname}>
                   <div className="flex items-center cursor-pointer gap-2">
                     <Image
-                      src={doctor.image}
+                      src={
+                        process.env.NEXT_PUBLIC_IMAGE_URL +
+                        "doctors/" +
+                        doctor?.doctorPhoto
+                      }
                       width={24}
                       height={24}
                       alt="Doctor's image"
                       className="border border-dark-500 rounded-full"
                     />
-                    <p>{doctor.name}</p>
+                    <p>{doctor?.fullname}</p>
                   </div>
                 </SelectItem>
               ))}

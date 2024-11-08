@@ -12,7 +12,6 @@ const AppointmentDetails = ({
 }) => {
   const { userData } = useLocalStorage();
 
-  console.log(appointment);
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -71,11 +70,11 @@ const AppointmentDetails = ({
           />
         )}
 
-        <AppointmentModal
+        {/* <AppointmentModal
           type="cancel"
           userId={userData.id}
           appointment={appointment}
-        />
+        /> */}
       </div>
     </div>
   );

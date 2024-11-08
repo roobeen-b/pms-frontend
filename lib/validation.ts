@@ -141,3 +141,12 @@ export function getAppointmentSchema(type: string) {
       return ScheduleAppointmentSchema;
   }
 }
+
+export const RegisterDoctorInfoFormValidation = z.object({
+  doctorLicenseNo: z
+    .string()
+    .min(5, "License Number must at least be 5 characters."),
+  specialties: z.string().min(1, "Select at least one specialty"),
+  doctorPhoto: z.custom<File[]>(),
+  doctorDesc: z.string().min(10, "Description must be at least 10 characters."),
+});

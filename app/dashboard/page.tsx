@@ -1,7 +1,10 @@
 "use client";
 
 import NewAppointmentButton from "@/components/AppointmentButton";
-import { getAllAppointmentsByUser } from "@/lib/actions/appointment.actions";
+import {
+  getAllAppointmentsByDoctor,
+  getAllAppointmentsByUser,
+} from "@/lib/actions/appointment.actions";
 import { useEffect, useState } from "react";
 import StatCards from "@/components/StatCards";
 import useLocalStorage from "@/hooks/useLocalStorage";
@@ -15,12 +18,17 @@ const Dashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const { token } = useLocalStorage();
+  const { token, userData } = useLocalStorage();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await getAllAppointmentsByUser(token);
+        let res;
+        if (userData.role === "User") {
+          res = await getAllAppointmentsByUser(token);
+        } else if (userData.role === "Doctor") {
+          res = await getAllAppointmentsByDoctor(token);
+        }
 
         if (res) {
           setAppointments(res);
@@ -45,7 +53,7 @@ const Dashboard = () => {
 
         <section className="flex justify-center gap-2 mt-6">
           <NewAppointmentButton type="View" />
-          <NewAppointmentButton type="Create" />
+          {userData.role !== "Doctor" && <NewAppointmentButton type="Create" />}
         </section>
       </main>
     </>
