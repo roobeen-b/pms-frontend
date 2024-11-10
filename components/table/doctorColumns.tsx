@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { ArrowUpDown } from "lucide-react";
 
 export const doctorColumns: ColumnDef<DoctorInfo>[] = [
   {
@@ -12,7 +13,17 @@ export const doctorColumns: ColumnDef<DoctorInfo>[] = [
   },
   {
     accessorKey: "fullname",
-    header: "Doctor Name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Doctor Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
       <div className="flex gap-2">
         <Image
@@ -32,14 +43,34 @@ export const doctorColumns: ColumnDef<DoctorInfo>[] = [
   },
   {
     accessorKey: "specialty",
-    header: "Specialties",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Specialties
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
       <p className="text-14-medium">{row.original.specialty || ""}</p>
     ),
   },
   {
     accessorKey: "docLicenseNo",
-    header: "License No",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          License No
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
     cell: ({ row }) => (
       <p className="text-14-medium">{row.original.docLicenseNo || ""}</p>
     ),
