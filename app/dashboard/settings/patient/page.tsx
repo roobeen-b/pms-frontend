@@ -13,7 +13,7 @@ const PatientSettings = () => {
     if (!token) return;
     const fetchPatientData = async () => {
       try {
-        const patientInfo = await getPatientInfo(token);
+        const patientInfo = await getPatientInfo(token, userData.id);
         setPatientData(patientInfo);
       } catch (error) {
         console.log(`Error fetching patient data: ${error}`);

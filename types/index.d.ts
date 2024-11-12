@@ -50,6 +50,12 @@ declare interface RegisterUserParams {
   privacyConsent: boolean;
 }
 
+declare interface PatientInfo extends RegisterUserParams {
+  fullname: string;
+  phone: string;
+  email: string;
+}
+
 declare type CreateAppointmentParams = {
   userId: string;
   doctorId: string;
@@ -98,6 +104,16 @@ declare interface AppointmentCounts {
 
 declare interface Appointments extends AppointmentCounts {
   allAppointments: any[];
+}
+
+declare interface AllAppointmentCount extends AppointmentCounts {
+  allAppointments: number;
+}
+
+declare interface AllCounts extends allAppointmentCount {
+  appointmentCount: allAppointmentCount;
+  patientCount: number;
+  doctorCount: number;
 }
 
 declare interface RegisterDoctorInfo {

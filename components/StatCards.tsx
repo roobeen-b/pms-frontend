@@ -5,7 +5,7 @@ const StatCards = ({
   appointments,
   loading,
 }: {
-  appointments: Appointments;
+  appointments: AllCounts;
   loading: boolean;
 }) => {
   if (loading) {
@@ -17,19 +17,19 @@ const StatCards = ({
       <StatCard
         type="scheduled"
         icon="/assets/icons/appointments.svg"
-        count={appointments.scheduledAppointments}
+        count={appointments?.appointmentCount.scheduledAppointments}
         label="Total number of scheduled appointments"
       />
       <StatCard
         type="pending"
         icon="/assets/icons/pending.svg"
-        count={appointments.pendingAppointments}
+        count={appointments?.appointmentCount.pendingAppointments}
         label="Total number of pending appointments"
       />
       <StatCard
         type="cancelled"
         icon="/assets/icons/cancelled.svg"
-        count={appointments.cancelledAppointments}
+        count={appointments?.appointmentCount.cancelledAppointments}
         label="Total number of cancelled appointments"
       />
     </section>

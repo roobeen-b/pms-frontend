@@ -198,6 +198,37 @@ export const updateAppointment = async (
   }
 };
 
+export const deleteAppointment = async (
+  token: string,
+  appointmentId: string
+) => {
+  try {
+    const res = await ApiMethods.delete(
+      `appointment/deleteAppointment?appointmentId=${appointmentId}`,
+      token
+    );
+
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log(`Error deleting appointment: ${error}`);
+    return parseStringify(error);
+  }
+};
+
+export const getAllCounts = async (token: string) => {
+  try {
+    const res = (await ApiMethods.get("getAllCounts", token)) as {
+      data: AllCounts;
+    };
+    return res?.data;
+  } catch (error) {
+    console.log("An error occured while fetching appointment: ", error);
+    return parseStringify(error);
+  }
+};
+
 export const sendSMSNotification = async (userId: string, content: string) => {
   try {
     const message = await messaging.createSms(

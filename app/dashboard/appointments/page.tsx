@@ -5,6 +5,7 @@ import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/Datatable";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import {
+  getAllAppointments,
   getAllAppointmentsByDoctor,
   getAllAppointmentsByUser,
 } from "@/lib/actions/appointment.actions";
@@ -23,6 +24,8 @@ const Appointments = () => {
           res = await getAllAppointmentsByUser(token);
         } else if (userData.role === "Doctor") {
           res = await getAllAppointmentsByDoctor(token);
+        } else {
+          res = await getAllAppointments(token);
         }
 
         if (res) {

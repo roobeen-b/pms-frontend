@@ -1,6 +1,5 @@
 "use client";
 
-import AppointmentButton from "@/components/AppointmentButton";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { getDoctorById } from "@/lib/actions/doctor.actions";

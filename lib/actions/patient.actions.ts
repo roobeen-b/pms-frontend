@@ -99,12 +99,27 @@ export const updatePatientInfo = async (
   }
 };
 
-export const getPatientInfo = async (token: string) => {
+export const getPatientInfo = async (token: string, patientId: string) => {
   try {
-    const res = (await ApiMethods.get("patient/getPatientInfo", token)) as any;
+    const res = (await ApiMethods.get(
+      `patient/getPatientInfo?patientId=${patientId}`,
+      token
+    )) as any;
     if (res) {
       const data = await res.data;
       return data;
+    }
+  } catch (error) {
+    console.log(`Error fetching patient data: ${error}`);
+    return parseStringify(error);
+  }
+};
+
+export const getAllPatients = async (token: string) => {
+  try {
+    const res = (await ApiMethods.get("patient/getAllPatients", token)) as any;
+    if (res) {
+      return res;
     }
   } catch (error) {
     console.log(`Error fetching patient data: ${error}`);
@@ -118,7 +133,7 @@ export const updateUserInfo = async (
 ) => {
   try {
     const res = (await ApiMethods.put(
-      "updateUserInfo",
+      "patient/updateUserInfo",
       userData,
       token
     )) as any;
@@ -128,6 +143,22 @@ export const updateUserInfo = async (
     }
   } catch (error) {
     console.log(`Error updating user data: ${error}`);
+    return parseStringify(error);
+  }
+};
+
+export const deletePatient = async (token: string, patientId: string) => {
+  try {
+    const res = await ApiMethods.delete(
+      `patient/deletePatient?patientId=${patientId}`,
+      token
+    );
+
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log(`Error deleting patient: ${error}`);
     return parseStringify(error);
   }
 };

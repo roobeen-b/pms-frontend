@@ -38,7 +38,7 @@ const PassKeyModal = () => {
       if (path) {
         if (decryptedpasskey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
           setOpen(false);
-          router.push("/admin");
+          router.push("/dashboard");
         } else {
           setOpen(true);
         }

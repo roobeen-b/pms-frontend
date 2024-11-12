@@ -5,39 +5,38 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
-const SignoutModal = () => {
+const SignoutModal = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) => {
   const router = useRouter();
-  const [open, setOpen] = useState(true);
 
   function handleSignOut() {
     localStorage.clear();
-    router.push("/");
+    router.push("/login");
   }
 
   return (
-    <AlertDialog open={open}>
-      <AlertDialogContent>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
+          <AlertDialogTitle>
+            Are you sure you want to sign out?
+          </AlertDialogTitle>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={handleSignOut}>
-            Sign Out
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleSignOut} className="text-red-400">
+            Yes
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

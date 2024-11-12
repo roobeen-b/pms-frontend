@@ -10,19 +10,13 @@ import SubmitButton from "../SubmitButton";
 import { useEffect, useState } from "react";
 import { PatientFormValidation } from "@/lib/validation";
 import {
-  getPatientInfo,
   registerPatientInfo,
   updatePatientInfo,
 } from "@/lib/actions/patient.actions";
 import { useRouter } from "next/navigation";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
-import {
-  Doctors,
-  GenderOptions,
-  IdentificationTypes,
-  PatientFormDefaultValues,
-} from "@/constants";
+import { GenderOptions, IdentificationTypes } from "@/constants";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import { FileUploader } from "../FileUploader";

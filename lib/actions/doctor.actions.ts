@@ -57,3 +57,19 @@ export const getDoctorById = async (token: string, doctorId: string) => {
     return parseStringify(error);
   }
 };
+
+export const deleteDoctor = async (token: string, doctorId: string) => {
+  try {
+    const res = await ApiMethods.delete(
+      `doctor/deleteDoctor?doctorId=${doctorId}`,
+      token
+    );
+
+    if (res) {
+      return res;
+    }
+  } catch (error) {
+    console.log(`Error deleting doctor: ${error}`);
+    return parseStringify(error);
+  }
+};
