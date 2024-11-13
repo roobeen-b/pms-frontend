@@ -126,7 +126,7 @@ const AppointmentForm = ({
         }
       } else {
         const appointmentToUpdate = {
-          userId: userData.id,
+          userId: appointment?.userId!,
           appointmentId: appointment?.appointmentId || "",
           primaryPhysician: values?.primaryPhysician,
           doctorId: doctors?.find(
