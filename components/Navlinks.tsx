@@ -3,7 +3,7 @@
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Navlink {
   name: string;
@@ -68,20 +68,27 @@ const docLinks: Navlink[] = [
   },
 ];
 
-const Navlinks = () => {
+const Navlinks = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
   const path = usePathname();
+  const router = useRouter();
   const { userData } = useLocalStorage();
+
+  function handleRoute(href: string) {
+    router.push(href);
+    setOpen(false);
+  }
 
   function generateSideNav(links: Navlink[]) {
     return links.map((link) => (
       <div
         className={`flex gap-2 px-4 ${path === link.href ? "bg-dark-300" : ""}`}
         key={link.href}
+        onClick={() => handleRoute(link.href)}
       >
         <Image src={link.icon} width={24} height={24} alt="Navlink icon" />
-        <Link href={link.href} key={link.name} className={`py-4 rounded-sm`}>
+        <div key={link.name} className={`py-4 rounded-sm cursor-pointer`}>
           {link.name}
-        </Link>
+        </div>
       </div>
     ));
   }

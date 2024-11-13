@@ -13,8 +13,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="h-screen w-screen">
       <div className="flex">
-        <Sidenav />
-        <div className="flex flex-col w-full">
+        <div className="hidden md:block md:w-1/4 xl:w-1/5">
+          <Sidenav />
+        </div>
+        <div className="flex flex-col w-full md:w-3/4 xl:w-4/5">
           <Header />
           <main className="py-5 px-[5%] xl:px-12">{children}</main>
         </div>
