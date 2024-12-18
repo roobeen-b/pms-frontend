@@ -17,19 +17,19 @@ const StatCards = ({
       <StatCard
         type="scheduled"
         icon="/assets/icons/appointments.svg"
-        count={appointments?.appointmentCount.scheduledAppointments}
+        count={appointments?.appointmentCount?.scheduledAppointments}
         label="Total number of scheduled appointments"
       />
       <StatCard
         type="pending"
         icon="/assets/icons/pending.svg"
-        count={appointments?.appointmentCount.pendingAppointments}
+        count={appointments?.appointmentCount?.pendingAppointments}
         label="Total number of pending appointments"
       />
       <StatCard
         type="cancelled"
         icon="/assets/icons/cancelled.svg"
-        count={appointments?.appointmentCount.cancelledAppointments}
+        count={appointments?.appointmentCount?.cancelledAppointments}
         label="Total number of cancelled appointments"
       />
     </section>

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { deleteAppointment } from "@/lib/actions/appointment.actions";
+import { deleteDoctor } from "@/lib/actions/doctor.actions";
 import { deletePatient } from "@/lib/actions/patient.actions";
 import { useRouter } from "next/navigation";
 
@@ -41,9 +42,9 @@ const DeleteModal = ({
         router.push("/dashboard/appointments");
         break;
 
-      case "patient":
-        await deletePatient(token, id);
-        router.push("/dashboard/patients");
+      case "doctor":
+        await deleteDoctor(token, id);
+        router.push("/dashboard/doctors");
         break;
 
       default:

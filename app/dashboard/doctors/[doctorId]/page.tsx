@@ -1,5 +1,6 @@
 "use client";
 
+import DeleteModal from "@/components/DeleteModal";
 import { Button } from "@/components/ui/button";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { getDoctorById } from "@/lib/actions/doctor.actions";
@@ -9,7 +10,9 @@ import { useEffect, useState } from "react";
 
 const DoctorDetail = () => {
   const [doctor, setDoctor] = useState<DoctorInfo>();
-  const { token } = useLocalStorage();
+  const [open, setOpen] = useState(false);
+
+  const { token, userData } = useLocalStorage();
   const params = useParams();
   const router = useRouter();
 
@@ -31,6 +34,12 @@ const DoctorDetail = () => {
     fetchDoctor();
   }, [token]);
 
+  if (open) {
+    return (
+      <DeleteModal open={open} setOpen={setOpen} id={doctorId} type="doctor" />
+    );
+  }
+
   return (
     <div>
       <div className="flex justify-between">
@@ -38,19 +47,31 @@ const DoctorDetail = () => {
           <h1 className="sub-header">Dr. {doctor?.fullname}</h1>
           <p>{doctor?.specialty}</p>
         </div>
-        <div>
+        {userData.role === "User" && (
+          <div>
+            <Button
+              variant="ghost"
+              className={`capitalize text-green-400`}
+              onClick={() =>
+                router.push(
+                  `/dashboard/appointments/new-appointment?doctor=${doctor?.fullname}`
+                )
+              }
+            >
+              Schedule Appointment
+            </Button>
+          </div>
+        )}
+
+        {userData.role === "Admin" && (
           <Button
             variant="ghost"
-            className={`capitalize text-green-400`}
-            onClick={() =>
-              router.push(
-                `/dashboard/appointments/new-appointment?doctor=${doctor?.fullname}`
-              )
-            }
+            className={`capitalize text-red-400`}
+            onClick={() => setOpen(true)}
           >
-            Schedule Appointment
+            Delete Doctor
           </Button>
-        </div>
+        )}
       </div>
       <div className="flex justify-center">
         <Image
