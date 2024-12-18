@@ -47,7 +47,7 @@ const DoctorDetail = () => {
           <h1 className="sub-header">Dr. {doctor?.fullname}</h1>
           <p>{doctor?.specialty}</p>
         </div>
-        {userData.role === "User" && (
+        {userData.role === "user" && (
           <div>
             <Button
               variant="ghost"
@@ -63,7 +63,7 @@ const DoctorDetail = () => {
           </div>
         )}
 
-        {userData.role === "Admin" && (
+        {userData.role === "admin" && (
           <Button
             variant="ghost"
             className={`capitalize text-red-400`}

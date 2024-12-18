@@ -203,7 +203,7 @@ const AppointmentForm = ({
               control={form.control}
               fieldType={FormFieldType.SELECT}
               name="primaryPhysician"
-              label="Doctor"
+              label="doctor"
               placeholder="Choose a doctor"
             >
               {doctors.map((doctor) => (

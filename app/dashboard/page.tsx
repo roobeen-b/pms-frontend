@@ -42,7 +42,7 @@ const Dashboard = () => {
   }, [token]);
   return (
     <>
-      {userData.role !== "Admin" ? (
+      {userData.role !== "admin" ? (
         <>
           <header className="sub-header">
             Checkout all your appointments here
@@ -52,7 +52,7 @@ const Dashboard = () => {
 
             <section className="flex justify-center gap-2 mt-6">
               <NewAppointmentButton type="View" />
-              {userData.role !== "Doctor" && (
+              {userData.role !== "doctor" && (
                 <NewAppointmentButton type="Create" />
               )}
             </section>

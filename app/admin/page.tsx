@@ -76,7 +76,7 @@ const AdminPage = () => {
         <div className="flex items-center gap-2">
           <Image
             src="/assets/images/admin.png"
-            alt="User"
+            alt="user"
             height={32}
             width={32}
           />

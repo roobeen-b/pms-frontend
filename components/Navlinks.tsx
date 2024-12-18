@@ -95,9 +95,9 @@ const Navlinks = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {userData.role === "Admin"
+      {userData.role === "admin"
         ? generateSideNav(allLinks)
-        : userData.role === "Doctor"
+        : userData.role === "doctor"
         ? generateSideNav(docLinks)
         : generateSideNav(links)}
     </div>

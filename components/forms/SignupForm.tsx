@@ -39,7 +39,7 @@ const SignupForm = () => {
       phone: "",
       password: "",
       confirmPassword: "",
-      role: "User" as RegisterAs,
+      role: "user" as RegisterAs,
     },
   });
 
@@ -65,9 +65,9 @@ const SignupForm = () => {
 
       if (user.status) {
         if (user.status == 201) {
-          if (role === "User") {
+          if (role === "user") {
             router.push(`/patients/${user.data.userId}/register`);
-          } else if (role === "Doctor") {
+          } else if (role === "doctor") {
             router.push(`/doctors/${user.data.userId}/register`);
           }
         } else {

@@ -20,9 +20,9 @@ const Appointments = () => {
     const fetchAppointments = async () => {
       try {
         let res;
-        if (userData.role === "User") {
+        if (userData.role === "user") {
           res = await getAllAppointmentsByUser(token);
-        } else if (userData.role === "Doctor") {
+        } else if (userData.role === "doctor") {
           res = await getAllAppointmentsByDoctor(token);
         } else {
           res = await getAllAppointments(token);
@@ -43,7 +43,7 @@ const Appointments = () => {
     <div className="flex flex-col gap-4">
       <div className="flex justify-between">
         <h1 className="sub-header">All Appointments</h1>
-        {userData.role !== "Doctor" && <AppointmentButton type="Create" />}
+        {userData.role === "user" && <AppointmentButton type="Create" />}
       </div>
       <div>
         <DataTable data={appointments} columns={columns} />

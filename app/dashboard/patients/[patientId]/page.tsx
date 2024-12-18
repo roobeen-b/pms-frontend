@@ -71,7 +71,7 @@ const PatientInfo = () => {
 
   return (
     <div>
-      {userData.role === "Admin" && (
+      {userData.role === "admin" && (
         <div className="flex justify-end">
           <Button
             variant="ghost"

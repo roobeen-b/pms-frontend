@@ -138,7 +138,7 @@ export const columns: ColumnDef<AppointmentParams>[] = [
             appointment={data}
           />
 
-          {userData.role !== "User" && (
+          {userData.role !== "user" && (
             <AppointmentModal
               type="schedule"
               userId={data.userId}

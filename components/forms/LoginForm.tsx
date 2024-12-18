@@ -61,9 +61,9 @@ const LoginForm = () => {
           const encryptedUserData = encryptKey(JSON.stringify(user));
           localStorage.setItem("userData", encryptedUserData);
 
-          if (user.role === "Admin") {
+          if (user.role === "admin") {
             setIsAdmin(true);
-          } else if (user.role === "User") {
+          } else if (user.role === "user") {
             router.push(from || "/dashboard");
           } else {
             router.push(from || `/dashboard`);

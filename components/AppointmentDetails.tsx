@@ -62,7 +62,7 @@ const AppointmentDetails = ({
       </div>
 
       <div className="flex justify-end gap-2">
-        {userData.role !== "User" && (
+        {userData.role !== "user" && (
           <AppointmentModal
             type="schedule"
             userId={userData.id}

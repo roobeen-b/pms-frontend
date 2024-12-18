@@ -29,7 +29,7 @@ export const UserFormValidation = z
       .string()
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password must be at most 20 characters"),
-    role: z.enum(["User", "Doctor"]),
+    role: z.enum(["user", "doctor"]),
   })
   .refine((value) => value.password === value.confirmPassword, {
     message: "Passwords did not match.",

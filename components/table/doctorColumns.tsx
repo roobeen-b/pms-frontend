@@ -107,7 +107,7 @@ export const doctorColumns: ColumnDef<DoctorInfo>[] = [
             View Details
           </Button>
 
-          {userData.role === "User" && (
+          {userData.role === "user" && (
             <Button
               variant="ghost"
               className={`capitalize text-green-400`}
@@ -121,7 +121,7 @@ export const doctorColumns: ColumnDef<DoctorInfo>[] = [
             </Button>
           )}
 
-          {userData.role === "Admin" && (
+          {userData.role === "admin" && (
             <Button
               variant="ghost"
               className={`capitalize text-red-400`}

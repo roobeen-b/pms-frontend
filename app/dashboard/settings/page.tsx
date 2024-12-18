@@ -23,7 +23,7 @@ const Settings = () => {
             <p>Update Account Info</p>
           </div>
         </Link>
-        {userData.role === "User" && (
+        {userData.role === "user" && (
           <Link href="/dashboard/settings/patient">
             <div className="p-4 bg-black rounded flex flex-col items-center gap-2">
               <Image
